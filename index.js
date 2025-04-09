@@ -8,12 +8,8 @@
  */
 
 const child_process = require('child_process');
-const execSync = child_process.execSync;
-const exec = child_process.exec;
 const spawn = child_process.spawn;
-const fs = require('fs');
 const EventEmitter = require('events').EventEmitter;
-const os = require('os');
 const Queue = require('queued-up');
 const xml2js = require('xml2js');
 
@@ -71,6 +67,7 @@ function convertRawJsonToScanResults(xmlInput) {
         return (/^open/i.test(port.state[0].$.state));
       });
 
+
       newHost.openPorts = openPorts.map((portItem) => {
         // console.log(JSON.stringify(portItem, null, 4))
 
@@ -87,11 +84,13 @@ function convertRawJsonToScanResults(xmlInput) {
           const method = portItem.service[0].$.method;
           // CW@2021 UPDATE 4.0.3 - product instead of tunnel
           const product = portItem.service[0].$.product;
+          const state = portItem.state[0].$.state;
 
           if (service) portObject.service = service;
           if (tunnel) portObject.tunnel = tunnel;
           if (method) portObject.method = method;
           if (product) portObject.product = product;
+          if (state) portObject.state = state;
         }
 
         if (port) portObject.port = port;
